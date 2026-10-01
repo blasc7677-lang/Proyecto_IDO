@@ -1,0 +1,170 @@
+\documentclass[12pt,letterpaper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[spanish]{babel}
+\usepackage{amsmath,amssymb}
+\usepackage[margin=2.5cm]{geometry}
+\usepackage{enumitem}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0.7em}
+
+\begin{document}
+
+\begin{center}
+  {\Large\textbf{Resumen: Investigación de Operaciones}}
+\end{center}
+
+\textbf{Integrantes del equipo:}\\
+Calderón Hernández Yunuel Jatziry\\
+Vilchis Fragoso Ximena Rosario\\
+Blas Rosas Casandra\\
+Moctezuma Juan Mayrin Paola
+
+%--------------------------------------------------------------
+\section*{Del problema a un modelo}
+
+La Investigación de Operaciones busca transformar problemas reales de asignación de recursos en modelos matemáticos que permitan analizar y encontrar soluciones. El procedimiento consiste en comprender la situación, identificar las decisiones, construir el modelo y posteriormente interpretar la solución.
+
+Pasos para construir un modelo de programación lineal:
+\begin{itemize}
+  \item Definir las decisiones y sus unidades.
+  \item Asignar una variable de decisión a cada decisión.
+  \item Construir la función objetivo, que puede buscar maximizar un beneficio o minimizar un costo.
+  \item Establecer las restricciones que representan los recursos, requisitos o condiciones del problema.
+  \item Agregar las condiciones de no negatividad.
+  \item Revisar que las dimensiones, unidades y significado de cada expresión sean correctos.
+\end{itemize}
+
+\subsection*{Función objetivo}
+
+\[ Z = c_1x_1 + c_2x_2 + \cdots + c_nx_n \]
+
+Para maximización:
+\[ \text{Max } Z = c_1x_1 + c_2x_2 + \cdots + c_nx_n \]
+
+Para minimización:
+\[ \text{Min } Z = c_1x_1 + c_2x_2 + \cdots + c_nx_n \]
+
+Condición de no negatividad:
+\[ x_i \geq 0 \]
+
+Un modelo es lineal cuando las variables aparecen solamente con potencia 1 y no se multiplican entre sí.
+
+%--------------------------------------------------------------
+\section*{Matrices}
+
+Una matriz organiza información en filas y columnas. Si tiene $m$ filas y $n$ columnas, su dimensión es $m \times n$.
+\[ A = (a_{ij})_{m\times n} \]
+
+Para sumar o restar matrices deben tener las mismas dimensiones. Para multiplicarlas, el número de columnas de la primera debe coincidir con el número de filas de la segunda.
+\[ A_{m\times n}\, B_{n\times p} = C_{m\times p} \]
+
+La transpuesta se obtiene intercambiando filas por columnas:
+\[ A^{T} = (a_{ji}) \]
+
+Un sistema de ecuaciones puede escribirse en forma matricial como:
+\[ AX = B \]
+
+Y su matriz aumentada como:
+\[ [\,A \mid B\,] \]
+
+El método de Gauss utiliza operaciones elementales sobre las filas para transformar el sistema y facilitar su resolución.
+
+%--------------------------------------------------------------
+\section*{Preparar el modelo para Simplex}
+
+Para aplicar el método Simplex, las restricciones deben llevarse a una forma adecuada. Dependiendo del signo se agregan variables de holgura, exceso o, cuando es necesario, variables artificiales.
+
+\subsection*{Restricción menor o igual ($\leq$)}
+\[ a^{T}x \leq b \;\rightarrow\; a^{T}x + s = b, \quad s \geq 0 \]
+La variable $s$ es una variable de holgura y representa el recurso que no se utiliza.
+
+\subsection*{Restricción mayor o igual ($\geq$)}
+\[ a^{T}x \geq b \;\rightarrow\; a^{T}x - e = b, \quad e \geq 0 \]
+La variable $e$ es una variable de exceso y representa cuánto se supera un mínimo requerido.
+
+\subsection*{Variable artificial}
+\[ a \geq 0 \]
+Se utiliza para obtener una base inicial en determinadas restricciones y debe desaparecer de la solución final.
+
+\subsection*{Cálculos de la tabla Simplex}
+
+Cálculo de $Z_j$:
+\[ Z_j = \sum_i C_{B_i}\, a_{ij} \]
+
+Costo reducido:
+\[ C_j - Z_j \]
+
+En maximización entra la variable con el mayor valor positivo y se termina cuando:
+\[ C_j - Z_j \leq 0 \]
+
+En minimización entra la variable con el valor más negativo y se termina cuando:
+\[ C_j - Z_j \geq 0 \]
+
+\subsection*{Prueba de la razón}
+\[ \theta_i = \frac{b_i}{a_{ik}}, \quad \text{siempre que } a_{ik} > 0 \]
+Se elige la menor razón no negativa.
+
+\subsection*{Ejemplo de Gran M}
+
+\[
+\begin{aligned}
+\text{Min } C &= 6x_1 + 8x_2\\
+x_1 + x_2 &= 5000\\
+x_1 &\leq 1500\\
+x_2 &\geq 750\\
+x_1, x_2 &\geq 0
+\end{aligned}
+\]
+
+Forma estándar:
+\[
+\begin{aligned}
+x_1 + x_2 + a_1 &= 5000\\
+x_1 + s_1 &= 1500\\
+x_2 - e_2 + a_2 &= 750
+\end{aligned}
+\]
+
+Función penalizada:
+\[ \text{Min } C = 6x_1 + 8x_2 + M a_1 + M a_2 \]
+
+Solución:
+\[ x_1 = 1500, \quad x_2 = 3500 \]
+\[ C_{\min} = 37000 \]
+\[ e_2 = 2750, \quad s_1 = 0 \]
+
+%--------------------------------------------------------------
+\section*{Ejemplo completo de maximización}
+
+Función objetivo:
+\[ \text{Max } Z = 4x_1 + 6x_2 \]
+
+Sujeto a:
+\[
+\begin{aligned}
+0.5x_1 + x_2 &\leq 600\\
+12.5x_1 + 10x_2 &\leq 10000\\
+x_1 &\leq 700\\
+x_1, x_2 &\geq 0
+\end{aligned}
+\]
+
+Forma estándar:
+\[
+\begin{aligned}
+0.5x_1 + x_2 + s_1 &= 600\\
+12.5x_1 + 10x_2 + s_2 &= 10000\\
+x_1 + s_3 &= 700
+\end{aligned}
+\]
+
+Solución:
+\[ x_1 = \frac{1600}{3} \approx 533.33 \]
+\[ x_2 = \frac{1000}{3} \approx 333.33 \]
+\[ Z_{\max} = \frac{12400}{3} \approx 4133.33 \]
+
+Variables de holgura:
+\[ s_1 = 0, \quad s_2 = 0, \quad s_3 = \frac{500}{3} \approx 166.67 \]
+
+\end{document}
